@@ -8,6 +8,7 @@ int obtenerMedio(Lista *A,int p, int r){
 	int medio = p;
 	int prom = 0;
 	int i;
+	#pragma omp parallel for private(i) shared(A) reduction(+ : prom)
 	for(i=p;i<=r;i++){
 		prom +=A->elementos[i]; 
 	}
@@ -74,7 +75,9 @@ void quickSortB(Lista *A,int p,int r){
 
 void doubleQuickSort(Lista *A){
     int contdir = 0,continv = 0;
-    for(int i = 1;i < A->tam;i++){
+	int i;
+	#pragma omp parallel for private(i) shared(A) reduction(+ : contdir)
+	for(i = 1;i < A->tam;i++){
         if(A->elementos[i-1] <= A->elementos[i]){
             contdir+=1;
         }
@@ -82,13 +85,13 @@ void doubleQuickSort(Lista *A){
     if(contdir == A->tam -1){
         return;
     }
-    for(int i = 1;i < A->tam;i++){
+	#pragma omp parallel for private(i) shared(A) reduction(+ : continv)
+    for(i = 1;i < A->tam;i++){
         if(A->elementos[i-1] >= A->elementos[i]){
             continv+=1;
         }
     }
     if(continv == A->tam -1){
-        int i;
         for(i = 0;i<A->tam/2;i++){
             swap(A,i,A->tam-1-i);
         }

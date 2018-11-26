@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 #include "lista.h"
-#include "serial.h"
+#include "paralelo.h"
 #include <string.h>
 
 #define TAM 10
