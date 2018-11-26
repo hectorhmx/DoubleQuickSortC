@@ -5,7 +5,7 @@
 #include "serial.h"
 #include <string.h>
 
-#define TAM 10
+#define TAM 16300
 #define CASO 1 //0 peor caso 1 promedio 2 mejor
 void generador(int caso,char archivo[]){
 	int i = 0;
