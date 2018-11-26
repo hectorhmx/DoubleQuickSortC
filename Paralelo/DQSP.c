@@ -33,8 +33,8 @@ void generador(int caso,char archivo[]){
 	free(A.elementos);
 }
 int main(){
-	//generador(0,"Peor.txt");
-	generador(1,"Promedio.txt");
-	generador(2,"Mejor.txt");
+	generador(0,"Peor.txt");
+	generador(1,"PromedioP.txt");
+	generador(2,"MejorP.txt");
 	return 0;
 }
