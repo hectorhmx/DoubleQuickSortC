@@ -8,10 +8,10 @@ int obtenerMedio(Lista *A,int p, int r){
 	int medio = p;
 	int prom = 0;
 	int i;
-	#pragma omp parallel for private(i) shared(A) reduction(+ : prom)
-	for(i=p;i<=r;i++){
+	//#pragma omp parallel for private(i) shared(A) reduction(+ : prom)
+	//for(i=p;i<=r;i++){
 		prom +=A->elementos[i]; 
-	}
+	//}
 	prom = prom/(r-p);
 	int anterior = NULL;
 	int actual;
@@ -59,14 +59,14 @@ void quickSort(Lista *A,int p,int r){
 	if(p<r){
 		int q;
 		q = particionar(A,p,r);
-		#pragma omp task shared(A) firstprivate(p,r)
+		#pragma omp task shared(A) firstprivate(p,r) if(r-p>50)
 		{
 			quickSort(A,p,q-1);
 		}
-		#pragma omp task shared(A) firstprivate(p,r)
-		{
+		//#pragma omp task shared(A) firstprivate(p,r) 
+		//{
 		quickSort(A,q+1,r);
-		}
+		//}
 		#pragma omp taskwait
 	}
 }
@@ -75,14 +75,14 @@ void quickSortB(Lista *A,int p,int r){
 	if(p<r){
 		int q;
 		q = particionarB(A,p,r);
-		#pragma omp task shared(A) firstprivate(p,r)
+		#pragma omp task shared(A) firstprivate(p,r) if(r-p>50)
 		{
 			quickSortB(A,p,q-1);
 		}
-		#pragma omp task shared(A) firstprivate(p,r)
-		{
+		//#pragma omp task shared(A) firstprivate(p,r)
+		//{
 		quickSortB(A,q+1,r);
-		}
+		//}
 		#pragma omp taskwait
 	}
 }
@@ -131,6 +131,7 @@ void doubleQuickSort(Lista *A){
         printf("quickSort\n");
         printf("######################\n");
 		*/
+		omp_set_nested(1);
 		#pragma omp parallel shared(A)
 			#pragma omp single
         	{quickSort(A,0,A->tam-1);}
